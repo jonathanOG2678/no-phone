@@ -30,7 +30,28 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final NativeServiceBridge _nativeService = NativeServiceBridge();
   String message = "Connection not tested";
+  bool monitoringEnabled = false;
+  bool settingsLoaded = false;
 
+  Future<void> setMonitoringStatus(bool enabled) async {
+    final bool saved = await _nativeService.setMonitoringEnabled(enabled);
+
+    if (!mounted) return;
+    setState(() {
+      monitoringEnabled = saved;
+    });
+  }
+
+  Future<void> getMonitoringStatus() async {
+    final bool saved = await _nativeService.getMonitoringEnabled();
+
+    if (!mounted) return;
+    setState(() {
+      monitoringEnabled = saved;
+    });
+  }
+
+  //To be deleted, or use as a quick test before operations?
   Future<void> testNativeConnection() async {
     try {
       final String response = await _nativeService.testConnection();
@@ -54,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    getMonitoringStatus();
   }
 
 
@@ -80,6 +102,16 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: testNativeConnection,
               child: Text('Test connection')
             ),
+            Text(monitoringEnabled ? 'Monitoring On' : 'Monitoring Off'),
+            SwitchListTile(
+              title: const Text('Allow Monitoring'),
+              value: monitoringEnabled,
+              onChanged: setMonitoringStatus
+            ),
+
+            
+
+
           
           ],
         ),
