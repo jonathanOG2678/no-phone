@@ -24,5 +24,29 @@ class NativeServiceBridge {
     return response ?? false;
   }
 
+  Future<bool> setOverlayEnabled(bool enabled) async {
+    final bool? response = await _platform.invokeMethod<bool>('setOverlayEnabled', {'enabled': enabled,});
+
+    return response ?? false;
+  }
+
+  Future<bool> getOverlayEnabled() async {
+    final bool? response = await _platform.invokeMethod<bool>('getOverlayEnabled');
+
+    return response ?? false;
+  }
+
+  Future<bool> setBackgroundUseEnabled(bool enabled) async {
+    final bool? response = await _platform.invokeMethod<bool>('setBackgroundUseEnabled', {'enabled': enabled,});
+
+    return response ?? false;
+  }
+
+  Future<bool> getBackgroundUseEnabled() async {
+    final bool? response = await _platform.invokeMethod<bool>('getBackgroundUseEnabled');
+
+    return response ?? false;
+  }
+
 
 }

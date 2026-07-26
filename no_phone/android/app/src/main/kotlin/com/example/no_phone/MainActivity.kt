@@ -1,6 +1,6 @@
 package com.example.no_phone
 
-import com.example.no_phone.storage.DrivingPreferences
+import com.example.no_phone.storage.DrivingPermissionsPreferences
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -10,12 +10,12 @@ class MainActivity : FlutterActivity() {
         private val CHANNEL = "com.example.no_phone"
     }
 
-    private lateinit var drivingPreferences: DrivingPreferences
+    private lateinit var drivingPermissionsPreferences: DrivingPermissionsPreferences
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine) //I think super requires this argument
 
-        drivingPreferences = DrivingPreferences(this)
+        drivingPermissionsPreferences = DrivingPermissionsPreferences(this)
 
 
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
@@ -37,15 +37,15 @@ class MainActivity : FlutterActivity() {
 
                         
                         //send to sharedPref to update
-                        drivingPreferences.setMonitoringEnabled(enabled)
+                        drivingPermissionsPreferences.setMonitoringEnabled(enabled)
                         //call getMonitoringEnabled() to return
-                        val savedValue = drivingPreferences.getMonitoringEnabled()
+                        val savedValue = drivingPermissionsPreferences.getMonitoringEnabled()
 
                         result.success(savedValue)
                     }
 
                     "getMonitoringEnabled" -> {
-                        val savedValue = drivingPreferences.getMonitoringEnabled()
+                        val savedValue = drivingPermissionsPreferences.getMonitoringEnabled()
 
                         result.success(savedValue)                        
                     }

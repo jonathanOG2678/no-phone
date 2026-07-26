@@ -4,6 +4,10 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+dependencies {
+    implementation ' com.google.android.gms:play-services-location:21.4.0'
+}
+
 android {
     namespace = "com.example.no_phone"
     compileSdk = flutter.compileSdkVersion
