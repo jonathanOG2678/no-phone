@@ -4,6 +4,10 @@ import com.example.no_phone.storage.DrivingPermissionsPreferences
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 
 class MainActivity : FlutterActivity() {
     companion object{
@@ -11,6 +15,8 @@ class MainActivity : FlutterActivity() {
     }
 
     private lateinit var drivingPermissionsPreferences: DrivingPermissionsPreferences
+    val drivingMonitor = DrivingMonitor(this)
+
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine) //I think super requires this argument
