@@ -1,7 +1,6 @@
 package com.example.no_phone
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -11,7 +10,7 @@ import com.google.android.gms.location.ActivityRecognition
 import com.google.android.gms.location.ActivityTransition
 import com.google.android.gms.location.ActivityTransitionRequest
 import com.google.android.gms.location.DetectedActivity
-import io.flutter.Log
+import android.util.Log
 
 /* Creates and stores the following:
 * - Activity Transition Request
@@ -25,6 +24,10 @@ import io.flutter.Log
 *  */
 
 class DrivingMonitor(context: Context) {
+    private companion object {
+        const val TAG = "DrivingMonitor"
+    }
+
     private  val appContext = context.applicationContext // Gets app context to allow Android features usage
     // Create and specify transition events of interest
     private val vehicleTransitions = listOf( // Creates list of interested events
@@ -39,7 +42,7 @@ class DrivingMonitor(context: Context) {
         PendingIntent.getBroadcast(appContext,
             0,
             Intent(appContext, ActivityTransitionReceiver::class.java), // Tells app who the request is for)
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE) // Sends the reroute to targeted apps
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE) // Sends the reroute to Google Play Services
 
 
     fun hasActivityRecognitionPermission(): Boolean {
@@ -48,27 +51,34 @@ class DrivingMonitor(context: Context) {
 
     fun enableMonitoring() {
         if (!hasActivityRecognitionPermission()) {
-            Log.w("Driving Monitor", "Monitoring not enabled: permission missing")
+            Log.w(TAG, "Monitoring not enabled: permission missing")
             return
         }
 
         activityRecognitionClient.requestActivityTransitionUpdates(transitionRequest, transitionPendingIntent)
             .addOnSuccessListener {
-                Log.d("Driving Monitor", "Monitoring Enabled")
+                Log.d(TAG, "Monitoring Enabled")
             }
             .addOnFailureListener{
-                Log.e("Driving Monitor", "Registration Failed", it)
+                Log.e(TAG, "Registration Failed", it)
             }
 
     }
 
     fun disableMonitoring() {
+        if (!hasActivityRecognitionPermission()) {
+            Log.w(TAG, "Monitoring not enabled: permission missing")
+            return
+        }
+
+        // Remove PendingIntent
+
         activityRecognitionClient.removeActivityTransitionUpdates(transitionPendingIntent)
             .addOnSuccessListener {
-                Log.d("Driving Monitor", "Monitoring Disabled")
+                Log.d(TAG, "Monitoring Disabled")
             }
             .addOnFailureListener {
-                Log.e("Driving Monitor", "Removal Failed", it)
+                Log.e(TAG, "Removal Failed", it)
             }
     }
 

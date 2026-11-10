@@ -2,7 +2,7 @@ package com.example.no_phone.storage
 
 import android.content.Context
 
-class DrivingPermissionsPreferences(context: Context) {
+class DrivingPreferences(context: Context) {
     companion object {
         private const val PREFERENCES_NAME = "driving_settings"
         private const val MONITORING_ENABLED_KEY = "monitoring_enabled"
